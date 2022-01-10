@@ -6,13 +6,21 @@ function westDebounce(fn, delay, immediate = false, resultCallback) {
 
 		if (immediate && !isInvoke) {
 			const result = fn.apply(this, args)
-			if (resultCallback) resultCallback(result)
+			if (resultCallback && typeof resultCallback === "function") {
+				resultCallback(result)
+			} else {
+				throw new TypeError("resultCallback not a function")
+			}
 			timer = null
 			isInvoke = true
 		} else {
 			timer = setTimeout(() => {
 				const result = fn.apply(this, args)
-				if (resultCallback) resultCallback(result)
+				if (resultCallback && typeof resultCallback === "function") {
+					resultCallback(result)
+				} else {
+					throw new TypeError("resultCallback not a function")
+				}
 				timer = null
 				isInvoke = false
 			}, delay)
